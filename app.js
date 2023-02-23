@@ -52,11 +52,11 @@ app.use('/server/recipes', recipesRoute);
 app.use('/server/recipes/search', search);
 app.use('/server/categories', categoryRoute);
 
-// app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, 'build')));
 
-// app.get("/*", function (req, res) {
-//    res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
+app.get('/*', function (req, res) {
+   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 // Start listening to the server
 app.listen(port, () => {
    console.log('Server is running');
