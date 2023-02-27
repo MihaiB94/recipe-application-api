@@ -3,12 +3,8 @@
    "version": "1.0.0",
    "main": "app.js",
    "scripts": {
-<<<<<<< HEAD
       "start": "node app.js"
-=======
-      "start": "node app.js",
-     
->>>>>>> 97492d0 (I added images)
+
    },
    "author": "",
    "license": "ISC",
