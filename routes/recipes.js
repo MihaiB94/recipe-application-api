@@ -2,8 +2,30 @@ const { Router } = require('express');
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 
-// const multer = require("multer"); // Library for uploading files
+const s3 = new AWS.S3({
+   accessKeyId: process.env.S3_ACCESS_KEY,
+   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+   region: process.env.S3_BUCKET_REGION
+});
+
+const upload = multer({
+   storage: multerS3({
+      s3: s3,
+      bucket: process.env.AWS_BUCKET_NAME,
+      contentType: multerS3.AUTO_CONTENT_TYPE,
+
+      metadata: function (req, file, cb) {
+         cb(null, { fieldName: file.fieldname });
+      },
+      key: function (req, file, cb) {
+         cb(null, Date.now().toString() + '-' + file.originalname);
+      }
+   })
+});
 
 //! ROUTES
 
@@ -43,10 +65,22 @@ router.get('/', async (req, res) => {
    }
 });
 
-// CREATE RECIPE
-router.post('/', async (req, res) => {
-   const newRecipe = new Recipe(req.body);
+router.post('/', upload.single('file'), async (req, res) => {
    try {
+      const imageUrl = req.file.location; // Get the URL of the uploaded file
+
+      const newRecipe = new Recipe({
+         username: req.body.username,
+         image_url: imageUrl,
+         title: req.body.title,
+         categories: req.body.categories,
+         description: req.body.description,
+         preparation_steps: JSON.parse(req.body.preparation_steps),
+         ingredients: JSON.parse(req.body.ingredients),
+
+         userId: req.body.userId
+      });
+
       const savedRecipe = await newRecipe.save();
       res.status(200).json(savedRecipe);
    } catch (err) {

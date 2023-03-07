@@ -12,6 +12,10 @@ const categoryRoute = require('./routes/categories');
 const { search } = require('./routes/recipes');
 const cors = require('cors');
 const multer = require('multer');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
+const uuid = require('uuid').v4;
+
 
 app.use(express.json());
 app.use(cors());
@@ -30,6 +34,9 @@ mongoose
       console.log(err);
       console.log('Could not Connect');
    });
+
+   // Configuring the S3 Upload
+   
 
 // Storage
 const storage = multer.diskStorage({
