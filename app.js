@@ -27,7 +27,7 @@ app.use(
 
 // middleware to handle CORS preflight requests
 app.options('*', (req, res) => {
-   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Origin', 'https://delicious-recipes.onrender.com');
    res.header('Access-Control-Allow-Methods', 'PUT', 'GET', 'POST', 'DELETE');
    res.header('Access-Control-Allow-Headers', 'Content-Type');
    res.setHeader('Access-Control-Allow-Credentials', true);
