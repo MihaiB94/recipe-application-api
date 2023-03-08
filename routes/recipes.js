@@ -5,7 +5,7 @@ const Recipe = require('../models/Recipe');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-
+const cors = require('cors');
 const s3 = new AWS.S3({
    accessKeyId: process.env.S3_ACCESS_KEY,
    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -26,7 +26,7 @@ const upload = multer({
       }
    })
 });
-
+router.use(cors);
 //! ROUTES
 
 router.get('/search', async (req, res) => {
