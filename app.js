@@ -19,8 +19,8 @@ const uuid = require('uuid').v4;
 app.use(express.json());
 app.use(
    cors({
-      origin: 'https://delicious-recipes.onrender.com',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      origin: 'https://delicious-recipes.onrender.com/',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       credentials: true
    })
 );
@@ -28,8 +28,10 @@ app.use(
 // middleware to handle CORS preflight requests
 app.options('*', (req, res) => {
    res.header('Access-Control-Allow-Origin', '*');
-   res.header('Access-Control-Allow-Methods', 'PUT');
+   res.header('Access-Control-Allow-Methods', 'PUT', 'GET', 'POST', 'DELETE');
    res.header('Access-Control-Allow-Headers', 'Content-Type');
+   res.setHeader('Access-Control-Allow-Credentials', true);
+
    res.status(204).send();
 });
 
