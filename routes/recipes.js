@@ -88,6 +88,7 @@ router.post('/', upload.single('file'), async (req, res) => {
    }
 });
 
+
 //UPDATE A RECIPE
 router.put('/:id', upload.single('file'), async (req, res) => {
    try {
@@ -98,6 +99,22 @@ router.put('/:id', upload.single('file'), async (req, res) => {
          return res
             .status(401)
             .json({ message: 'You are not authorized to edit this recipe.' });
+      }
+
+      // Delete the old image from S3 if it exists
+      if (recipe.image_url) {
+         const oldImageKey = recipe.image_url.split('/').pop();
+         const deleteParams = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: oldImageKey
+         };
+         s3.deleteObject(deleteParams, (err, data) => {
+            if (err) {
+               console.error(err);
+            } else {
+               console.log(`Deleted old image ${oldImageKey} from S3`);
+            }
+         });
       }
 
       // Update the recipe data
@@ -116,16 +133,6 @@ router.put('/:id', upload.single('file'), async (req, res) => {
       res.status(200).json(updatedRecipe);
    } catch (err) {
       console.log(err);
-      res.status(500).json(err);
-   }
-});
-
-//GET // Find a specific recipe
-router.get('/:id', async (req, res) => {
-   try {
-      const recipe = await Recipe.findById(req.params.id);
-      res.status(200).json(recipe);
-   } catch (err) {
       res.status(500).json(err);
    }
 });
