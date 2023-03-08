@@ -17,7 +17,9 @@ const aws = require('aws-sdk');
 const uuid = require('uuid').v4;
 
 app.use(express.json());
-app.use(cors);
+app.use(cors({
+  origin: 'https://delicious-recipes.onrender.com'
+}));
 
 // Connect to Mongo Database
 mongoose
