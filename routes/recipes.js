@@ -94,7 +94,7 @@ router.put('/:id', upload.single('file'), async (req, res) => {
       const recipe = await Recipe.findById(req.params.id);
 
       // Make sure that the user is logged in and authorized to edit the recipe
-      if (recipe.userId !== req.user._id) {
+      if (recipe.userId !== req.body.userId) {
          return res
             .status(401)
             .json({ message: 'You are not authorized to edit this recipe.' });
