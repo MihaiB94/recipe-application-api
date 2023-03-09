@@ -16,22 +16,10 @@ const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
 const uuid = require('uuid').v4;
 
-app.use(express.json());
-app.use(
-   cors({
-      origin: 'http://localhost:3000',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      credentials: true
-   })
-);
 
-// middleware to handle CORS preflight requests
-app.options('*', (req, res) => {
-   res.header('Access-Control-Allow-Origin', '*');
-   res.header('Access-Control-Allow-Methods', 'PUT');
-   res.header('Access-Control-Allow-Headers', 'Content-Type');
-   res.status(204).send();
-});
+app.use(express.json());
+app.use(cors());
+app.use('/images', express.static(path.join(__dirname, '/images')));
 
 // Connect to Mongo Database
 mongoose
@@ -47,7 +35,8 @@ mongoose
       console.log('Could not Connect');
    });
 
-// Configuring the S3 Upload
+   // Configuring the S3 Upload
+   
 
 // Storage
 const storage = multer.diskStorage({
