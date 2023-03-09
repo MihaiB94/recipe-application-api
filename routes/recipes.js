@@ -136,6 +136,16 @@ router.put('/:id', upload.single('file'), async (req, res) => {
    }
 });
 
+//GET // Find a specific recipe
+router.get('/:id', async (req, res) => {
+   try {
+      const recipe = await Recipe.findById(req.params.id);
+      res.status(200).json(recipe);
+   } catch (err) {
+      res.status(500).json(err);
+   }
+});
+
 //DELETE A SPECIFIC RECIPE
 router.delete('/:id', async (req, res) => {
    try {
