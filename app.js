@@ -17,9 +17,21 @@ const aws = require('aws-sdk');
 const uuid = require('uuid').v4;
 
 app.use(express.json());
-app.use(cors({
-  origin: 'https://delicious-recipes.onrender.com'
-}));
+app.use(
+   cors({
+      origin: 'http://localhost:3000',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      credentials: true
+   })
+);
+
+// middleware to handle CORS preflight requests
+app.options('*', (req, res) => {
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Methods', 'PUT');
+   res.header('Access-Control-Allow-Headers', 'Content-Type');
+   res.status(204).send();
+});
 
 // Connect to Mongo Database
 mongoose
@@ -35,7 +47,22 @@ mongoose
       console.log('Could not Connect');
    });
 
+// Configuring the S3 Upload
 
+// Storage
+const storage = multer.diskStorage({
+   destination: (req, file, cb) => {
+      cb(null, 'images');
+   },
+   filename: (req, file, cb) => {
+      cb(null, req.body.name);
+   }
+});
+
+const upload = multer({ storage: storage });
+app.post('/server/upload', upload.single('file'), (req, res) => {
+   res.status(200).json('File has been uploaded');
+});
 
 app.use('/server/authentication', authenticationRoute);
 app.use('/server/users', userRoute);
