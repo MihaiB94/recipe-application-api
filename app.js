@@ -36,20 +36,20 @@ mongoose
 
 // Configuring the S3 Upload
 
-// Storage
-const storage = multer.diskStorage({
-   destination: (req, file, cb) => {
-      cb(null, 'images');
-   },
-   filename: (req, file, cb) => {
-      cb(null, req.body.name);
-   }
-});
+// // Storage
+// const storage = multer.diskStorage({
+//    destination: (req, file, cb) => {
+//       cb(null, 'images');
+//    },
+//    filename: (req, file, cb) => {
+//       cb(null, req.body.name);
+//    }
+// });
 
-const upload = multer({ storage: storage });
-app.post('/server/upload', upload.single('file'), (req, res) => {
-   res.status(200).json('File has been uploaded');
-});
+// const upload = multer({ storage: storage });
+// app.post('/server/upload', upload.single('file'), (req, res) => {
+//    res.status(200).json('File has been uploaded');
+// });
 
 app.use('/server/authentication', authenticationRoute);
 app.use('/server/users', userRoute);
