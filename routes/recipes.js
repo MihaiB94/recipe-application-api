@@ -153,6 +153,21 @@ router.delete('/:id', async (req, res) => {
 
       if (recipe.userId === req.body.userId) {
          try {
+            // Delete the old image from S3 if it exists
+            if (recipe.image_url) {
+               const oldImageKey = recipe.image_url.split('/').pop();
+               const deleteParams = {
+                  Bucket: process.env.AWS_BUCKET_NAME,
+                  Key: oldImageKey
+               };
+               s3.deleteObject(deleteParams, (err, data) => {
+                  if (err) {
+                     console.error(err);
+                  } else {
+                     console.log(`Deleted old image ${oldImageKey} from S3`);
+                  }
+               });
+            }
             await recipe.delete();
             res.status(200).json('Recipe deleted');
          } catch (err) {
