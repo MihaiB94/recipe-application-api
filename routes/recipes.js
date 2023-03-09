@@ -5,7 +5,7 @@ const Recipe = require('../models/Recipe');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const cors = require('cors');
+
 const s3 = new AWS.S3({
    accessKeyId: process.env.S3_ACCESS_KEY,
    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -26,7 +26,7 @@ const upload = multer({
       }
    })
 });
-router.use(cors);
+
 //! ROUTES
 
 router.get('/search', async (req, res) => {
@@ -65,7 +65,6 @@ router.get('/', async (req, res) => {
    }
 });
 
-// CREATE A RECIPE
 router.post('/', upload.single('file'), async (req, res) => {
    try {
       const imageUrl = req.file.location; // Get the URL of the uploaded file
@@ -152,16 +151,6 @@ router.delete('/:id', async (req, res) => {
       } else {
          res.status(401).json('You cannot delete this recipe!');
       }
-   } catch (err) {
-      res.status(500).json(err);
-   }
-});
-
-//GET // Find a specific recipe
-router.get('/:id', async (req, res) => {
-   try {
-      const recipe = await Recipe.findById(req.params.id);
-      res.status(200).json(recipe);
    } catch (err) {
       res.status(500).json(err);
    }

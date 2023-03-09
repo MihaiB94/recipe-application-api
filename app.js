@@ -16,7 +16,6 @@ const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
 const uuid = require('uuid').v4;
 
-
 app.use(express.json());
 app.use(cors());
 app.use('/images', express.static(path.join(__dirname, '/images')));
@@ -35,8 +34,7 @@ mongoose
       console.log('Could not Connect');
    });
 
-   // Configuring the S3 Upload
-   
+// Configuring the S3 Upload
 
 // Storage
 const storage = multer.diskStorage({
