@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Category = require('../models/Category');
-const { AuthToken } = require('./authToken');
+const AuthToken = require('./authToken');
 
 // Create new category
 router.post('/', AuthToken, async (req, res) => {
