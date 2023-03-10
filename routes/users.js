@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/User');
-const AuthToken = require('./authToken');
+const { AuthToken } = require('./authToken');
 
 // Library for encrypting passwords saved in the database
 const bcrypt = require('bcrypt');

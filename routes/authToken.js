@@ -1,4 +1,5 @@
 const authenticateToken = (req, res, next) => {
+   const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
    const authHeader = req.headers['authorization'];
    const token = authHeader && authHeader.split(' ')[1];
 

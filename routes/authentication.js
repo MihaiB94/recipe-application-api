@@ -145,7 +145,7 @@ router.post('/login', async (req, res) => {
 
       res.status(200).json({ user, token });
    } catch (err) {
-      res.res.status(500).json('Request failed with status code 500');
+      res.status(500).json('Request failed with status code 500');
    }
 });
 
