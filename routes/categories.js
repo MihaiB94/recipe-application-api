@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const Category = require('../models/Category');
+const AuthToken = require('./authToken');
 
 // Create new category
-router.post('/', async (req, res) => {
+router.post('/', AuthToken, async (req, res) => {
    const newCategory = new Category(req.body);
    try {
       const savedCategory = await newCategory.save();
