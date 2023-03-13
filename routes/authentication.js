@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+
 // Library for encrypting passwords saved in the database
 const bcrypt = require('bcrypt');
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 // REGISTER
 router.post('/register', async (req, res) => {
    try {
+      // Check if username or email already exists
       const existingUser = await User.findOne({
          $or: [{ username: req.body.username }, { email: req.body.email }]
       });
@@ -15,10 +15,11 @@ router.post('/register', async (req, res) => {
          return res.status(400).json('Username or email already exists');
       }
 
+      // Check if password and confirm password match
       if (req.body.password !== req.body.confirmPassword) {
          return res.status(400).json('Passwords do not match');
       }
-
+      // Validate password criteria
       const passwordRegex =
          /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       if (!passwordRegex.test(req.body.password)) {
@@ -38,16 +39,13 @@ router.post('/register', async (req, res) => {
       });
 
       const user = await newUser.save();
-      const token = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
-         expiresIn: '1h'
-      });
-
-      res.status(200).json({ token });
+      res.status(200).json(user);
    } catch (err) {
       res.status(500).json(err);
    }
 });
 
+// LOGIN
 router.post('/login', async (req, res) => {
    try {
       const { username, password } = req.body;
@@ -69,14 +67,9 @@ router.post('/login', async (req, res) => {
          return res.status(400).json('Wrong credentials!');
       }
 
-      // Generate JWT token
-      const token = jwt.sign({ id: user._id }, JWT_SECRET_KEY, {
-         expiresIn: '1h'
-      });
-
-      res.status(200).json({ token });
+      res.status(200).json(user);
    } catch (err) {
-      res.status(500).json('Request failed with status code 500');
+      res.res.status(500).json('Request failed with status code 500');
    }
 });
 

@@ -5,7 +5,6 @@ const Recipe = require('../models/Recipe');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const AuthToken = require('./authToken');
 
 const s3 = new AWS.S3({
    accessKeyId: process.env.S3_ACCESS_KEY,
@@ -66,7 +65,7 @@ router.get('/', async (req, res) => {
    }
 });
 
-router.post('/', AuthToken, upload.single('file'), async (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
    try {
       const imageUrl = req.file.location; // Get the URL of the uploaded file
 
@@ -90,7 +89,7 @@ router.post('/', AuthToken, upload.single('file'), async (req, res) => {
 });
 
 //UPDATE A RECIPE
-router.put('/:id', AuthToken, upload.single('file'), async (req, res) => {
+router.put('/:id', upload.single('file'), async (req, res) => {
    try {
       const recipe = await Recipe.findById(req.params.id);
 
@@ -148,7 +147,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //DELETE A SPECIFIC RECIPE
-router.delete('/:id', AuthToken, async (req, res) => {
+router.delete('/:id', async (req, res) => {
    try {
       const recipe = await Recipe.findById(req.params.id);
 

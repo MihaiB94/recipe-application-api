@@ -1,12 +1,11 @@
 const router = require('express').Router();
 const User = require('../models/User');
-const AuthToken = require('./authToken');
 
 // Library for encrypting passwords saved in the database
 const bcrypt = require('bcrypt');
 
 // UPDATE user information
-router.put('/:id', AuthToken, async (req, res) => {
+router.put('/:id', async (req, res) => {
    if (req.body.userId === req.params.id) {
       if (req.body.password) {
          const salt = await bcrypt.genSalt(15);
@@ -30,7 +29,7 @@ router.put('/:id', AuthToken, async (req, res) => {
 });
 
 // DELETE user information
-router.delete('/:id', AuthToken, async (req, res) => {
+router.delete('/:id', async (req, res) => {
    if (req.body.userId === req.params.id) {
       try {
          const user = await User.findById(req.params.id);
@@ -53,7 +52,7 @@ router.delete('/:id', AuthToken, async (req, res) => {
 });
 
 //GET User
-router.get('/:id', AuthToken, async (req, res) => {
+router.get('/:id', async (req, res) => {
    try {
       const user = await User.findById(req.params.id);
       const { password, ...others } = user._doc;
@@ -64,7 +63,7 @@ router.get('/:id', AuthToken, async (req, res) => {
 });
 
 // Add recipes to favorites
-router.put('/:userId/favorites/:recipeId', AuthToken, (req, res) => {
+router.put('/:userId/favorites/:recipeId', (req, res) => {
    User.findById(req.params.userId)
       .then((user) => {
          if (user) {
@@ -92,7 +91,7 @@ router.put('/:userId/favorites/:recipeId', AuthToken, (req, res) => {
 });
 
 // Remove recipes from favorites
-router.delete('/:userId/favorites/:recipeId', AuthToken, (req, res) => {
+router.delete('/:userId/favorites/:recipeId', (req, res) => {
    User.findById(req.params.userId)
       .then((user) => {
          if (user) {
@@ -116,7 +115,7 @@ router.delete('/:userId/favorites/:recipeId', AuthToken, (req, res) => {
 });
 
 // Get all favorites recipes
-router.get('/:userId/favorites', AuthToken, (req, res) => {
+router.get('/:userId/favorites', (req, res) => {
    User.findById(req.params.userId)
       .populate('favorites')
       .then((user) => {
