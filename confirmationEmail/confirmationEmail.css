@@ -1,0 +1,26 @@
+.email-container {
+   font-family: Arial, sans-serif;
+   font-size: 16px;
+   line-height: 1.5;
+   color: #333;
+   background-color: #f5f5f5;
+   padding: 20px;
+}
+
+.email-header {
+   background-color: #003366;
+   color: #fff;
+   padding: 10px;
+   text-align: center;
+}
+
+.email-body {
+   padding: 20px;
+}
+
+.email-footer {
+   background-color: #003366;
+   color: #fff;
+   padding: 10px;
+   text-align: center;
+}

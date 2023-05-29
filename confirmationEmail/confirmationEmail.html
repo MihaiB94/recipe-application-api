@@ -1,0 +1,28 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="confirmationEmail.css" />
+   </head>
+   <body>
+      <div class="email-container">
+         <div class="email-header">
+            <h1>Welcome to Delicious Recipes!</h1>
+         </div>
+         <div class="email-body">
+            <p>Dear ${user.username},</p>
+            <p>
+               Thank you for registering with Delicious Recipes. Please click
+               the link below to confirm your account and get started:
+            </p>
+            <p><a href="${confirmationLink}">${confirmationLink}</a></p>
+            <p>
+               If you did not register for an account with Delicious Recipes,
+               please ignore this email.
+            </p>
+         </div>
+         <div class="email-footer">
+            <p>Thank you,</p>
+            <p>Delicious Recipes Team</p>
+         </div>
+      </div>
+   </body>
+</html>
