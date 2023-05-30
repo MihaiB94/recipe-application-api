@@ -96,7 +96,7 @@ router.post('/register', async (req, res) => {
       return res.status(200).json({
          message:
             'User registered successfully, please check your email to confirm your account',
-         accessToken: token // Include token in response
+         verifyAccountToken: token // Include token in response
       });
    } catch (err) {
       res.status(500).json(err);
@@ -136,12 +136,12 @@ router.post('/login', async (req, res) => {
          favorites: user.favorites
       };
       const accessToken = jwt.sign(payload, JWT_SECRET_KEY, {
-         expiresIn: 1 * 20
+         expiresIn: 1 * 120
       });
 
       // Generate refresh token
       const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET_KEY, {
-         expiresIn: 1 * 1120
+         expiresIn: '12h'
       });
 
       // Store tokens in database
@@ -162,7 +162,8 @@ router.post('/login', async (req, res) => {
          .cookie('refreshToken', refreshToken, {
             httpOnly: true,
             sameSite: 'none',
-            secure: true
+            secure: true,
+            domain: 'https://delicious-recipes.onrender.com'
          })
          .json({
             accessToken,
