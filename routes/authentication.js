@@ -162,7 +162,8 @@ router.post('/login', async (req, res) => {
          .cookie('refreshToken', refreshToken, {
             httpOnly: true,
             sameSite: 'none',
-            secure: true
+            secure: true,
+            domain: 'https://delicious-recipes.onrender.com'
          })
          .json({
             accessToken,
