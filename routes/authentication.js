@@ -167,7 +167,7 @@ router.post('/login', async (req, res) => {
          })
          .json({
             accessToken,
-            expiresIn: 1 * 20,
+            expiresIn: 1 * 120,
             id: user._id,
             username: user.username,
             favorites: user.favorites,

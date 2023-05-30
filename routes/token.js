@@ -59,7 +59,7 @@ router.post('/refresh-token', async (req, res) => {
          const decodedAccessToken = jwt.decode(accessToken); // Decoding the token without verification
          const now = Math.floor(Date.now() / 1000);
 
-         if (decodedAccessToken.exp - now > 1 * 10) {
+         if (decodedAccessToken.exp - now > 1 * 120) {
             // Access token is still valid for more than 20 seconds
             const verifiedAccessToken = jwt.verify(accessToken, JWT_SECRET_KEY); // Verify the token after checking expiration
 
@@ -75,12 +75,12 @@ router.post('/refresh-token', async (req, res) => {
             });
          } else {
             const newAccessToken = jwt.sign(payload, JWT_SECRET_KEY, {
-               expiresIn: 1 * 20
+               expiresIn: 1 * 120
             });
 
             return res.status(200).json({
                accessToken: newAccessToken,
-               expiresIn: 1 * 20,
+               expiresIn: 1 * 120,
                id: user._id,
                username: user.username,
                favorites: user.favorites,
