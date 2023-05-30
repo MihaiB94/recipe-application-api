@@ -31,8 +31,6 @@ router.post('/refresh-token', async (req, res) => {
             .json({ message: 'Invalid or expired refresh token' });
       }
 
-
-
       const user = await User.findOne({ _id: decodedRefreshToken.id });
 
       if (!user) {
@@ -41,7 +39,7 @@ router.post('/refresh-token', async (req, res) => {
 
       const existingToken = await Token.findOne({ userId: user._id });
 
-      if (!existingToken || existingToken.refreshToken !== refreshToken) {
+      if (existingToken.refreshToken !== refreshToken) {
          return res.status(401).json({ message: 'Invalid refresh token' });
       }
 
@@ -64,7 +62,6 @@ router.post('/refresh-token', async (req, res) => {
          if (decodedAccessToken.exp - now > 1 * 10) {
             // Access token is still valid for more than 20 seconds
             const verifiedAccessToken = jwt.verify(accessToken, JWT_SECRET_KEY); // Verify the token after checking expiration
-        
 
             return res.status(200).json({
                accessToken,
@@ -80,8 +77,6 @@ router.post('/refresh-token', async (req, res) => {
             const newAccessToken = jwt.sign(payload, JWT_SECRET_KEY, {
                expiresIn: 1 * 20
             });
-
-
 
             return res.status(200).json({
                accessToken: newAccessToken,
