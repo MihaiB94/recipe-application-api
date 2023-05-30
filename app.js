@@ -21,7 +21,8 @@ const corsOptions = {
       'https://delicious-recipes.onrender.com',
       'http://localhost:3001',
       'http://localhost:3000'
-   ] // List of allowed origins
+   ], // List of allowed origins
+   credentials: true // Set the credentials mode to 'include'
    // other options
 };
 
