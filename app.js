@@ -7,6 +7,7 @@ require('dotenv/config');
 const mongoose = require('mongoose');
 //! Import Routes
 const authenticationRoute = require('./routes/authentication');
+const refreshToken = require('./routes/token');
 const userRoute = require('./routes/users');
 const recipesRoute = require('./routes/recipes');
 const categoryRoute = require('./routes/categories');
@@ -43,6 +44,7 @@ mongoose
    });
 
 app.use('/server/authentication', authenticationRoute);
+app.use('/server/token', refreshToken);
 app.use('/server/users', userRoute);
 app.use('/server/recipes', recipesRoute);
 app.use('/server/recipes/search', search);
