@@ -163,7 +163,8 @@ router.post('/login', async (req, res) => {
             httpOnly: true,
             sameSite: 'none',
             secure: true,
-            domain: 'delicious-recipes.site'
+            domain: 'delicious-recipes.site',
+            path: '/'
          })
          .json({
             accessToken,
