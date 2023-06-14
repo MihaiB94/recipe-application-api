@@ -163,7 +163,7 @@ router.post('/login', async (req, res) => {
             httpOnly: true,
             sameSite: 'none',
             secure: true,
-            domain: 'delicious-recipes.onrender.com'
+            domain: '.onrender.com'
          })
          .json({
             accessToken,
