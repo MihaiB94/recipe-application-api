@@ -159,23 +159,16 @@ router.post('/login', async (req, res) => {
       }
 
       res.status(200)
-         .cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true,
-            domain: 'delicious-recipes.site',
-            path: '/'
-         })
-         .json({
-            accessToken,
-            expiresIn: 1 * 120,
-            id: user._id,
-            username: user.username,
-            favorites: user.favorites,
-            email: user.email,
-            profilePic: user.profilePic,
-            permissions: user.permissions
-         });
+      .json({
+         accessToken,
+         expiresIn: 1 * 120,
+         id: user._id,
+         username: user.username,
+         favorites: user.favorites,
+         email: user.email,
+         profilePic: user.profilePic,
+         permissions: user.permissions
+      });
    } catch (err) {
       res.status(500).json({ message: 'Request failed with status code 500' });
    }
