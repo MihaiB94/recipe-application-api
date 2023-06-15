@@ -160,7 +160,7 @@ router.post('/login', async (req, res) => {
 
       res.status(200)
          .cookie('refreshToken', refreshToken, {
-            httpOnly: false,
+            httpOnly: true,
             sameSite: 'none',
             secure: true,
             maxAge: 12 * 60 * 60 * 1000 // 12 hours in milliseconds
