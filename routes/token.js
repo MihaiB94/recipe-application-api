@@ -9,9 +9,29 @@ const JWT_REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET_KEY;
 
 router.post('/refresh-token', async (req, res) => {
    try {
-      const userId = req.user.id;
+      const { refreshToken } = req.cookies;
 
-      const user = await User.findOne({ _id: userId });
+      if (!refreshToken) {
+         return res.status(401).json({ message: 'Refresh token not provided' });
+      }
+
+      let decodedRefreshToken;
+
+      try {
+         decodedRefreshToken = jwt.verify(refreshToken, JWT_REFRESH_SECRET_KEY);
+      } catch (err) {
+         // Delete the expired refresh token from the database
+         await Token.findOneAndDelete({ refreshToken });
+
+         // Delete the expired refresh token from the cookies
+         res.clearCookie('refreshToken');
+
+         return res
+            .status(401)
+            .json({ message: 'Invalid or expired refresh token' });
+      }
+
+      const user = await User.findOne({ _id: decodedRefreshToken.id });
 
       if (!user) {
          return res.status(401).json({ message: 'User not found' });
@@ -19,20 +39,8 @@ router.post('/refresh-token', async (req, res) => {
 
       const existingToken = await Token.findOne({ userId: user._id });
 
-      if (!existingToken) {
-         return res.status(401).json({ message: 'Refresh token not found' });
-      }
-
-      const refreshToken = existingToken.refreshToken;
-
-      let decodedRefreshToken;
-
-      try {
-         decodedRefreshToken = jwt.verify(refreshToken, JWT_REFRESH_SECRET_KEY);
-      } catch (err) {
-         return res
-            .status(401)
-            .json({ message: 'Invalid or expired refresh token' });
+      if (existingToken.refreshToken !== refreshToken) {
+         return res.status(401).json({ message: 'Invalid refresh token' });
       }
 
       const accessToken = req.headers.authorization?.split(' ')[1];

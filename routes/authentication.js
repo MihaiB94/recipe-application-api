@@ -159,16 +159,21 @@ router.post('/login', async (req, res) => {
       }
 
       res.status(200)
-      .json({
-         accessToken,
-         expiresIn: 1 * 120,
-         id: user._id,
-         username: user.username,
-         favorites: user.favorites,
-         email: user.email,
-         profilePic: user.profilePic,
-         permissions: user.permissions
-      });
+         .cookie('refreshToken', refreshToken, {
+            httpOnly: false,
+            sameSite: 'none',
+            secure: true
+         })
+         .json({
+            accessToken,
+            expiresIn: 1 * 120,
+            id: user._id,
+            username: user.username,
+            favorites: user.favorites,
+            email: user.email,
+            profilePic: user.profilePic,
+            permissions: user.permissions
+         });
    } catch (err) {
       res.status(500).json({ message: 'Request failed with status code 500' });
    }
