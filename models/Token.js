@@ -6,13 +6,18 @@ const tokenSchema = new mongoose.Schema({
       ref: 'User',
       required: true
    },
-
-   refreshToken: { type: String, required: true },
+   refreshToken: {
+      type: String,
+      required: true
+   },
    refreshTokenExpiresAt: {
       type: Date,
       required: true,
-      default: Date.now,
-      expires: '6h'
+      default: () => {
+         const now = new Date();
+         return now.setHours(now.getHours() + 12);
+      },
+      expires: '12h'
    }
 });
 
