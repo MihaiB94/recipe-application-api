@@ -21,7 +21,7 @@ app.set('trust proxy', 1);
 const corsOptions = {
    origin: [
       'https://delicious-recipes.onrender.com',
-      'dellicious-recipes.netlify.app',
+      'https://dellicious-recipes.netlify.app',
 
       'http://localhost:3001',
       'http://localhost:3000'
