@@ -162,7 +162,8 @@ router.post('/login', async (req, res) => {
          .cookie('refreshToken', refreshToken, {
             httpOnly: false,
             sameSite: 'none',
-            secure: true
+            secure: true,
+            maxAge: 12 * 60 * 60 * 1000 // 12 hours in milliseconds
          })
          .json({
             accessToken,
